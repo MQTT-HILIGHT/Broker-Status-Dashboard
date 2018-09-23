@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>MQTT Broker Status</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/datepicker3.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
+	<!--Custom Font-->
+	<link href="css/test.css" rel="stylesheet">
+
+	<script src="js/mqttws.min.js" type="text/javascript"></script>
+	<script src="js/broker-status.js" type="text/javascript"></script>
+
+</head>
+<body>
+	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+			<div class="col-md-1">
+				<a class="navbar-brand" href="#"><span>HI</span>LIGHT</a>
+
+			</div>
+		</div><!-- /.container-fluid -->
+	</nav>
+
+	<div id="mqtt-broker-status">
+	<div class="col-sm-10 col-sm-offset-1 main">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header" name="mqtt" style="padding-bottom:0px;"><a class="navbar-brand" href="#mqtt"><span style="font-size:2.5em;">BROKER</span></a> <span style="font-size:1.2em;">STATUS</span></h1>
+			</div>
+		</div><!--/.row-->
+
+		<div class="panel panel-container">
+			<div class="row">
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-teal panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-users color-teal"></em>
+							<div id="mqtt-broker-conn" class="large">0</div>
+							<div class="text-muted">Connectors</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-blue panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-trash color-orange"></em>
+							<div id="mqtt-broker-drop" class="large">0</div>
+							<div class="text-muted">Dropped Messages</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-orange panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-envelope-open color-blue"></em>
+							<div id="mqtt-broker-smsg" class="large">0</div>
+							<div class="text-muted">Sent Messages</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-red panel-widget ">
+						<div class="row no-padding"><em class="fa fa-xl fa-envelope color-red"></em>
+							<div id="mqtt-broker-rmsg" class="large">0</div>
+							<div class="text-muted">Received Messages</div>
+						</div>
+					</div>
+				</div>
+			</div><!--/.row-->
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Message Send Traffic
+						
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body">
+						<div class="canvas-wrapper">
+							<canvas class="main-chart" id="mqtt-broker-chart" height="200" width="600"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--/.row-->
+			<div class="col-sm-12">
+				<p class="back-link">Made by <a href="https://www.medialoot.com">SeHo Park</a></p>
+			</div>
+		</div><!--/.row-->
+	</div>	<!--/.main-->
+
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/chart.min.js"></script>
+	<script src="js/chart-data.js"></script>
+	<script src="js/easypiechart.js"></script>
+	<script src="js/easypiechart-data.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/custom.js"></script>
+</body>
+</html>

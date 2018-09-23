@@ -1,0 +1,97 @@
+// chartjs.js
+var ChartData= {
+  labels : ["1","2","3","4","5","6","7"],
+  datasets : [
+    {
+      label: "My Second dataset",
+      fillColor : "rgba(48, 164, 255, 0.2)",
+      strokeColor : "rgba(48, 164, 255, 1)",
+      pointColor : "rgba(48, 164, 255, 1)",
+      pointStrokeColor : "#fff",
+      pointHighlightFill : "#fff",
+      pointHighlightStroke : "rgba(48, 164, 255, 1)",
+      data : [0,0,0,0,0,0,0]
+    }
+  ]
+}
+var Chart;
+var Line;
+var OldData;
+var BaseData;
+
+// Paho MQTT
+var RecvMessageTag;
+var SendMessageTag;
+var ConnectorTag;
+var DroppedTag;
+
+var Ip 	= "127.0.0.1";
+
+var Client;
+
+window.onload = function () {
+  Client 	= new Paho.MQTT.Client(Ip, Number(9001),"/mqtt"," Status Dashboard1");
+
+  Client.onMessageArrived = onMessageArrived;
+
+  // connect the client
+  Client.connect({onSuccess:onConnect});
+
+  lineChart = document.getElementById("line-chart").getContext("2d");
+
+  Line = new Chart(lineChart).Line(ChartData, {
+    responsive: true,
+    scaleBeginAtZero : true,
+    scaleLineColor: "rgba(0,0,0,.2)",
+    scaleGridLineColor: "rgba(0,0,0,.05)",
+    scaleFontColor: "#c5c7cc"
+  });
+
+};
+
+
+function onConnect() {
+  Client.subscribe("$SYS/broker/workload/+");
+  //client.disconnect({onSuccess:onDisconnect});
+}
+
+function onMessageArrived(message) {
+
+  if(message.destinationName.indexOf("received") != -1){
+    if(RecvMessageTag==null)
+      RecvMessageTag = document.getElementById("--rmsg");
+    RecvMessageTag.innerHTML = message.payloadString;
+  }else if(message.destinationName.indexOf("sent") != -1){
+
+    if(SendMessageTag==null){
+      OldData = message.payloadString;
+      SendMessageTag = document.getElementById("--smsg");
+    }
+
+    for(var i = 0; i < 6; i++){
+      Line.datasets[0].points[i].value = Line.datasets[0].points[i+1].value;
+    }
+    Line.datasets[0].points[6].value = message.payloadString - OldData;
+    Line.update();
+    SendMessageTag.innerHTML = message.payloadString;
+    OldData = message.payloadString;
+
+  }else if(message.destinationName.indexOf("connected") != -1){
+    if(ConnectorTag==null)
+      ConnectorTag = document.getElementById("--conn");
+    ConnectorTag.innerHTML = message.payloadString;
+  }else if(message.destinationName.indexOf("dropped") != -1){
+    if(DroppedTag==null)
+      DroppedTag = document.getElementById("--drop");
+    DroppedTag.innerHTML = message.payloadString;
+  }
+}
+
+function removeData(chart) {
+    chart.data.labels.shift();
+    chart.data.datasets[0].data.shift();
+    // chart.data.datasets.forEach((dataset) => {
+    //     dataset.data.pop();
+    // });
+    chart.update();
+}
